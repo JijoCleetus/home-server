@@ -1,0 +1,32 @@
+{
+  "name": "node-seed",
+  "version": "1.0.0",
+  "description": "a basic seed project to start with a nodejs rest api ",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "santech",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.668.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.4",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "nodemon": "^2.0.2",
+    "path": "^0.12.7",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "crypto": "^1.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mime": "^2.4.4",
+    "mysql": "^2.18.1",
+    "node-excel-export": "^1.4.4",
+    "xlsx": "^0.16.0"
+  }
+}
