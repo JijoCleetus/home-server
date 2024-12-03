@@ -13,6 +13,17 @@ shoppingListDb.getAllShopping = () => {
   });
 };
 
+shoppingListDb.getAllVendors = () => {
+  return new Promise((resolve, reject) => {
+    pool.query(`SELECT * FROM vendor`, (err, results) => {
+      if (err) {
+        reject(err);
+      }
+      return resolve(results);
+    });
+  });
+};
+
 shoppingListDb.getShoppingListById = (shoppingId) => {
   return new Promise((resolve, reject) => {
     pool.query(
@@ -45,6 +56,21 @@ shoppingListDb.updateListStatus = (data) => {
   });
 };
 
+shoppingListDb.addShopping = (data) => {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `INSERT INTO shopping(name,vendor)
+        values(?,?)`,
+      [data.name, data.vendor],
+      (err, results) => {
+        if (err) {
+          reject(err);
+        }
+        return resolve(results);
+      }
+    );
+  });
+};
 shoppingListDb.addItemToShoppingList = (data) => {
   return new Promise((resolve, reject) => {
     pool.query(
@@ -58,6 +84,42 @@ shoppingListDb.addItemToShoppingList = (data) => {
         return resolve(results);
       }
     );
+  });
+};
+
+shoppingListDb.removeItemFromShopping = (id) => {
+  const query = `DELETE FROM shopping WHERE id = ?`;
+  return new Promise((resolve, reject) => {
+    pool.query(query, [id], (err, results) => {
+      if (err) {
+        reject(err);
+      }
+      return resolve(results);
+    });
+  });
+};
+
+shoppingListDb.removeItemFromShoppingList = (id) => {
+  const query = `DELETE FROM shopping_list WHERE id = ?`;
+  return new Promise((resolve, reject) => {
+    pool.query(query, [id], (err, results) => {
+      if (err) {
+        reject(err);
+      }
+      return resolve(results);
+    });
+  });
+};
+
+shoppingListDb.clearShoppingList = (id) => {
+  const query = `DELETE FROM shopping_list WHERE shoppingId = ?`;
+  return new Promise((resolve, reject) => {
+    pool.query(query, [id], (err, results) => {
+      if (err) {
+        reject(err);
+      }
+      return resolve(results);
+    });
   });
 };
 

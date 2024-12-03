@@ -27,6 +27,96 @@ shoppingRouter.get("/", verifyToken, (req, res, next) => {
   });
 });
 
+shoppingRouter.post("/", verifyToken, (req, res, next) => {
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let results = await db.addShopping(req.body);
+        res.send({
+          success: true,
+          shopping: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
+shoppingRouter.delete("/:itemId", verifyToken, (req, res, next) => {
+  const itemId = req.params.itemId;
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let shopingList = await db.getShoppingListById(itemId);
+        if (shopingList?.length > 0) {
+          res.send({
+            success: false,
+            message: `Shopping list exists for the selected shopping. Do you still want to delete?`,
+            status: 201,
+          });
+          return;
+        }
+        let results = await db.removeItemFromShopping(itemId);
+        res.send({
+          success: true,
+          message: `Successfully deleted item`,
+          status: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
+shoppingRouter.delete("/force/:itemId", verifyToken, (req, res, next) => {
+  const itemId = req.params.itemId;
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let shopingList = await db.clearShoppingList(itemId);
+        let results = await db.removeItemFromShopping(itemId);
+        res.send({
+          success: true,
+          message: `Successfully deleted item`,
+          status: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
+shoppingRouter.post("/list", verifyToken, (req, res, next) => {
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let results = await db.addItemToShoppingList(req.body);
+        res.send({
+          success: true,
+          applications: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
 //Get application of specific applicationId
 shoppingRouter.get("/list/:shoppingId", verifyToken, (req, res, next) => {
   const shoppingId = req.params.shoppingId;
@@ -82,16 +172,37 @@ shoppingRouter.put("/list/:shoppingId", verifyToken, (req, res, next) => {
   });
 });
 
-shoppingRouter.post("/list", verifyToken, (req, res, next) => {
+shoppingRouter.delete("/list/:itemId", verifyToken, (req, res, next) => {
+  const itemId = req.params.itemId;
   jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
     if (err) {
       res.sendStatus(403);
     } else {
       try {
-        let results = await db.addItemToShoppingList(req.body);
+        let results = await db.removeItemFromShoppingList(itemId);
         res.send({
           success: true,
-          applications: results,
+          message: `Successfully deleted item`,
+          status: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
+shoppingRouter.get("/vendors", verifyToken, (req, res, next) => {
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let results = await db.getAllVendors();
+        res.send({
+          success: true,
+          vendors: results,
         });
       } catch (e) {
         console.log(e);
