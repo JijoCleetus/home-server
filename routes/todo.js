@@ -13,7 +13,50 @@ todoRouter.get("/", verifyToken, (req, res, next) => {
         let results = await db.getAllTodoList();
         res.send({
           success: true,
-          shopping: results,
+          todo: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
+todoRouter.post("/", verifyToken, (req, res, next) => {
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let results = await db.addTodo(req.body);
+        res.send({
+          success: true,
+          todo: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
+todoRouter.put("/:todoId", verifyToken, (req, res, next) => {
+  let reqData = {};
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        reqData = req.body;
+
+        let results = await db.updateTodoStatus(reqData);
+        // console.log(results);
+        res.send({
+          success: true,
+          message: `Successfully updated your todo`,
+          status: results,
         });
       } catch (e) {
         console.log(e);
