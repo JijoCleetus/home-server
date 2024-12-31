@@ -41,4 +41,16 @@ todoListDb.updateTodoStatus = (data) => {
   });
 };
 
+todoListDb.removeItemFromTodoList = (id) => {
+  const query = `DELETE FROM todo_list WHERE id = ?`;
+  return new Promise((resolve, reject) => {
+    pool.query(query, [id], (err, results) => {
+      if (err) {
+        reject(err);
+      }
+      return resolve(results);
+    });
+  });
+};
+
 module.exports = todoListDb;

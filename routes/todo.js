@@ -66,4 +66,25 @@ todoRouter.put("/:todoId", verifyToken, (req, res, next) => {
   });
 });
 
+todoRouter.delete("/:listId", verifyToken, (req, res, next) => {
+  const listId = req.params.listId;
+  jwt.verify(req.token, process.env.JWT_SECRET_KEY, async (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+    } else {
+      try {
+        let results = await db.removeItemFromTodoList(listId);
+        res.send({
+          success: true,
+          message: `Successfully deleted item`,
+          status: results,
+        });
+      } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+      }
+    }
+  });
+});
+
 module.exports = todoRouter;
