@@ -20,6 +20,7 @@ const pingRoute = require("./routes/ping");
 // const utilityRoute = require("./routes/utilities");
 const shopping = require("./routes/shopping");
 const loginRouter = require("./routes/login");
+const todoRouter = require("./routes/todo");
 // const dashboardRouter = require("./routes/dashboard");
 // const reportRouter = require("./routes/report");
 
@@ -27,6 +28,7 @@ const loginRouter = require("./routes/login");
 app.use("/ping", pingRoute);
 // app.use("/api/utilities", utilityRoute);
 app.use("/api/shopping", shopping);
+app.use("/api/todo", todoRouter);
 app.use("/api/login", loginRouter);
 // app.use("/api/dashboard", dashboardRouter);
 // app.use("/api/report", reportRouter);
