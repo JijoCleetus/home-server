@@ -2,14 +2,18 @@ const pool = require("../index.js").mysql_pool;
 
 let shoppingListDb = {};
 
-shoppingListDb.getAllShopping = () => {
+shoppingListDb.getAllShopping = (id) => {
   return new Promise((resolve, reject) => {
-    pool.query(`SELECT * FROM shopping`, (err, results) => {
-      if (err) {
-        reject(err);
+    pool.query(
+      `SELECT * FROM shopping WHERE userId = ? `,
+      id,
+      (err, results) => {
+        if (err) {
+          reject(err);
+        }
+        return resolve(results);
       }
-      return resolve(results);
-    });
+    );
   });
 };
 

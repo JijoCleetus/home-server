@@ -14,7 +14,8 @@ shoppingRouter.get("/", verifyToken, (req, res, next) => {
       res.sendStatus(403);
     } else {
       try {
-        let results = await db.getAllShopping();
+        const decodedToken = jwt.decode(req.token);
+        let results = await db.getAllShopping(decodedToken.id);
         res.send({
           success: true,
           shopping: results,

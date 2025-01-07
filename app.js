@@ -19,7 +19,8 @@ app.use(express.json({ limit: "200mb" }));
 const pingRoute = require("./routes/ping");
 // const utilityRoute = require("./routes/utilities");
 const shopping = require("./routes/shopping");
-const loginRouter = require("./routes/login");
+const loginRouter = require("./routes/public/login");
+const signUpRouter = require("./routes/public/signup");
 const todoRouter = require("./routes/todo");
 // const dashboardRouter = require("./routes/dashboard");
 // const reportRouter = require("./routes/report");
@@ -30,6 +31,7 @@ app.use("/ping", pingRoute);
 app.use("/api/shopping", shopping);
 app.use("/api/todo", todoRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/signup", signUpRouter);
 // app.use("/api/dashboard", dashboardRouter);
 // app.use("/api/report", reportRouter);
 

@@ -5,7 +5,7 @@ let logindb = {};
 logindb.login = (email, password) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `SELECT role,name,email FROM user WHERE email = ? AND password = ?`,
+      `SELECT id,role,name,email FROM user WHERE email = ? AND password = ?`,
       [email, password],
       (err, results) => {
         if (err) {
