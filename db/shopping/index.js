@@ -60,12 +60,12 @@ shoppingListDb.updateListStatus = (data) => {
   });
 };
 
-shoppingListDb.addShopping = (data) => {
+shoppingListDb.addShopping = (data,id) => {
   return new Promise((resolve, reject) => {
     pool.query(
-      `INSERT INTO shopping(name,vendor)
-        values(?,?)`,
-      [data.name, data.vendor],
+      `INSERT INTO shopping(name,vendor,userId)
+        values(?,?,?)`,
+      [data.name, data.vendor,id],
       (err, results) => {
         if (err) {
           reject(err);
