@@ -1,5 +1,7 @@
 const pool = require("../index.js").mysql_pool;
 
+const cryptoEnggine = require("../../services/crypto-engine.js");
+
 let signUpDb = {};
 
 signUpDb.checkUser = (email) => {
@@ -19,10 +21,11 @@ signUpDb.checkUser = (email) => {
 
 signUpDb.signUp = (data) => {
   return new Promise((resolve, reject) => {
+    const password = cryptoEnggine.encode(data.password);
     pool.query(
       `INSERT INTO user(role,name,email,password)
         values(?,?,?,?)`,
-      ["user", data.name, data.email, data.password],
+      ["user", data.name, data.email, password],
       (err, results) => {
         if (err) {
           reject(err);
