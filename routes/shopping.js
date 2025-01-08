@@ -34,7 +34,8 @@ shoppingRouter.post("/", verifyToken, (req, res, next) => {
       res.sendStatus(403);
     } else {
       try {
-        let results = await db.addShopping(req.body);
+        const decodedToken = jwt.decode(req.token);
+        let results = await db.addShopping(req.body,decodedToken.user.id);
         res.send({
           success: true,
           shopping: results,
